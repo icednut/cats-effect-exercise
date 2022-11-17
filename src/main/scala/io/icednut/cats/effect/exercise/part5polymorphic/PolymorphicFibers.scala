@@ -2,7 +2,8 @@ package io.icednut.cats.effect.exercise.part5polymorphic
 
 import cats.effect.kernel.Outcome.{Canceled, Errored, Succeeded}
 import cats.effect.{Fiber, GenSpawn, IO, IOApp, MonadCancel, Outcome, Spawn}
-import cats.implicits.catsSyntaxApply
+import cats.implicits.*
+import cats.effect.syntax.*
 
 object PolymorphicFibers extends IOApp.Simple :
 

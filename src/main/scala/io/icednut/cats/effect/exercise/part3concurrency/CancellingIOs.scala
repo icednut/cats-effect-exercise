@@ -101,4 +101,4 @@ object CancellingIOs extends IOApp.Simple:
     } yield ()
   }
 
-  override def run = threeStepProgram()
+  override def run = authProgram
