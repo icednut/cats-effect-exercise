@@ -114,7 +114,7 @@ object Fibers extends IOApp.Simple {
     }
   }
 
-  def testEx1() = {
+  def testEx1(): IO[Unit] = {
     val aComputation = IO("starting").debug >> IO.sleep(1.second) >> IO.raiseError(new RuntimeException("Hi")).debug >> IO(42)
     processResultsFromFiber(aComputation).void
   }
@@ -198,7 +198,7 @@ object Fibers extends IOApp.Simple {
 
   def testEx3() = {
     val computation = IO("starting").debug >> IO.sleep(2.second) >> IO("done!").debug >> IO(42)
-    timeout(computation, 2.seconds).debug.void
+    timeout(computation, 1.seconds).debug.void
   }
 
   override def run: IO[Unit] =
