@@ -112,7 +112,7 @@ object Refs extends IOApp.Simple :
     def tickingClock: IO[Unit] = for {
       _ <- IO.sleep(1.second)
       _ <- IO(System.currentTimeMillis()).debug
-      _ <- IO(ticks += 1)
+      _ <- IO(ticks += 1) // not thread safe
       _ <- tickingClock
     } yield ()
 
@@ -147,4 +147,27 @@ object Refs extends IOApp.Simple :
     } yield ()
   }
 
-  override def run: IO[Unit] = tickingClockPure()
+  def tickingClockWeird(): IO[Unit] = {
+    val ticks: IO[Ref[IO, Int]] = Ref[IO].of(0)
+
+    def tickingClock: IO[Unit] = for {
+      t <- ticks // ticks will give you a NEW ref
+      _ <- IO.sleep(1.second)
+      _ <- IO(System.currentTimeMillis()).debug
+      _ <- t.update(_ + 1)
+      _ <- tickingClock
+    } yield ()
+
+    def printTicks: IO[Unit] = for {
+      t <- ticks // ticks will give you a NEW ref
+      _ <- IO.sleep(5.second)
+      _ <- t.get.map(currentTick => s"TICKS: ${currentTick}").debug
+      _ <- printTicks
+    } yield ()
+
+    for {
+      _ <- (tickingClock, printTicks).parTupled
+    } yield ()
+  }
+
+  override def run: IO[Unit] = tickingClockWeird()
