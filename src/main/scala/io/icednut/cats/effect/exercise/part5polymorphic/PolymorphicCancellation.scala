@@ -75,10 +75,6 @@ object PolymorphicCancellation extends IOApp.Simple:
   import io.icednut.cats.effect.exercise.utils.general.*
   import scala.concurrent.duration.*
 
-  // hint: use this instead of IO.sleep
-  def unsafeSleep[F[_], E](duration: FiniteDuration)(using mc: MonadCancel[F, E]): F[Unit] =
-    mc.pure(Thread.sleep(duration.toMillis)) // not semantic blocking
-
   // my answer
 //  def authFlowGeneral[F[_], E](using mc: MonadCancel[F, E]): F[Unit] = {
 //    val inputPassword: F[String] = mc.pure("Input password: ").debug >> mc.pure("(typing password)").debug.unsafeSleep(1.seconds) >> mc.pure("RockTheJVM1!")
