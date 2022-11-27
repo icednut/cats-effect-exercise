@@ -4,6 +4,7 @@ import cats.effect.{ ExitCode, IO, IOApp }
 
 import scala.io.StdIn
 
+// 이거 들어보자.
 object IOApps {
 
   val program = for {

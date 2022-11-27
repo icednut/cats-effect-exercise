@@ -41,8 +41,9 @@ object IOIntroduction {
   def smallProgram_v2: IO[Unit] =
     (IO(StdIn.readLine()), IO(StdIn.readLine())).mapN(_ + _).map(println)
 
-  /** Exercises
-    */
+  /**
+   * Exercises
+   */
 
   // 1 - sequence two IOs and take the result of the LAST one
   // hint: use flatMap
@@ -71,8 +72,8 @@ object IOIntroduction {
   def forever_v4[A](io: IO[A]): IO[A] =
     io.foreverM // with tail recursion
 
-    // 4 - convert an IO to a different type
-    // hint: use map
+  // 4 - convert an IO to a different type
+  // hint: use map
   def convert[A, B](ioa: IO[A], value: B): IO[B] =
     ioa.map(_ => value)
   def convert_v2[A, B](ioa: IO[A], value: B): IO[B] =
@@ -97,7 +98,7 @@ object IOIntroduction {
       if (n <= 0) IO.pure(0)
       else for {
         prevValue <- IO(n)
-        nextValue <- sumIO(n - 1)
+        nextValue <- sumIO_v2(n - 1)
       } yield {
         prevValue + nextValue
       }
@@ -136,10 +137,10 @@ object IOIntroduction {
 //    println(forever_v2(aDelayedIO).unsafeRunSync())
 //    println(convert(aDelayedIO, 0).unsafeRunSync())
 //    println(sumIO(10).unsafeRunSync())
-    println(sumIO_v2(20000).unsafeRunSync())
+//    println(sumIO_v2(20000).unsafeRunSync())
 //    println(sum(20000))
-    println(fibonacci(11).unsafeRunSync())
-    println(fibonacci_v2(11).unsafeRunSync())
+//    println(fibonacci(10000000).unsafeRunSync())
+    println(fibonacci_v2(10000000).unsafeRunSync())
   }
 
 }

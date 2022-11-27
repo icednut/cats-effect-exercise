@@ -27,8 +27,7 @@ object AsyncIOs extends IOApp.Simple:
   }.toEither
 
   def computeMolOnThreadPool(): Unit =
-    threadPool.execute(() => computeMeaningOfLifeEither())
-    // Big Problem
+    threadPool.execute(() => computeMeaningOfLifeEither())    // Big Problem
 
   // lift computation to an IO
   // async is a Foreign Function Interface

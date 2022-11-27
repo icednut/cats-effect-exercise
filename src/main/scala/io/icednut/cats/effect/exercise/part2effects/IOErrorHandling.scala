@@ -12,8 +12,9 @@ object IOErrorHandling {
   val aFailure: IO[Int]       = IO.raiseError(new RuntimeException("A PROPER FAILURE"))
 
   // handle exceptions
-  val dealWithIt = aFailure.handleErrorWith { case _: RuntimeException =>
-    IO.delay(println("I'm still here."))
+  val dealWithIt = aFailure.handleErrorWith {
+    case _: RuntimeException =>
+      IO.delay(println("I'm still here."))
   }
 
   // turn into an Either
@@ -23,8 +24,9 @@ object IOErrorHandling {
   val resultAsEffect: IO[Unit] =
     aFailure.redeemWith(ex => IO.delay(println(s"FAIL: $ex")), value => IO.delay(println(s"SUCCESS: $value")))
 
-  /** Exercises
-    */
+  /**
+   * Exercises
+   */
   // 1 - construct potentially failed IOs from standard data types (Option, Try, Either)
   def option2IO[A](option: Option[A])(ifEmpty: Throwable): IO[A] =
 //    option.map(v => IO.pure(v)).getOrElse(IO.raiseError(ifEmpty))

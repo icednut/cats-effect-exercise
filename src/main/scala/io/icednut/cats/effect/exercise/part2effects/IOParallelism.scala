@@ -6,7 +6,7 @@ import cats.effect.{IO, IOApp}
 
 object IOParallelism extends IOApp.Simple {
 
-  // IOs Are usually sequential
+  // IOs a  re usually sequential
   val aniIO    = IO(s"[${Thread.currentThread().getName}] Ani")
   val kamranIO = IO(s"[${Thread.currentThread().getName}] Kamran")
 
@@ -37,7 +37,7 @@ object IOParallelism extends IOApp.Simple {
   // regarding failure:
   val aFailure: IO[String] = IO.raiseError(new RuntimeException("I can't do this!"))
   // compose success + failure
-  val parallelWithFailure = (meaningOfLife.debug, aFailure.debug).parMapN(_ + _)
+  val parallelWithFailure: IO[String] = (meaningOfLife.debug, aFailure.debug).parMapN(_ + _)
 
   // compose failure + failure
   val anotherFailure: IO[String] = IO.raiseError(new RuntimeException("Second failure"))
@@ -45,5 +45,5 @@ object IOParallelism extends IOApp.Simple {
   val twoFailuresDelayed: IO[String] = (IO(Thread.sleep(1000)) >> aFailure.debug, anotherFailure.debug).parMapN(_ + _)
 
   override def run: IO[Unit] =
-    twoFailures.debug.void
+    composedIO.debug.void
 }

@@ -46,10 +46,10 @@ object Fibers extends IOApp.Simple {
     - cancelled
    */
 
-  val someIOOnAnotherThread = runOnSomeOtherThread(meaningOfLife)
-  val someResultFromAnotherThread = someIOOnAnotherThread.flatMap {
-    case Succeeded(effect) => effect
-    case Errored(e)        => IO(0)
+  val someIOOnAnotherThread: IO[Outcome[IO, Throwable, Int]] = runOnSomeOtherThread(meaningOfLife)
+  val someResultFromAnotherThread: IO[Int] = someIOOnAnotherThread.flatMap {
+    case Succeeded(effect: IO[Int]) => effect
+    case Errored(e)        => IO(e)
     case Canceled()        => IO(0)
   }
 

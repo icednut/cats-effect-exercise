@@ -19,8 +19,8 @@ object IOTraversal extends IOApp.Simple {
 
   import cats.instances.list._
 
-  val listTraverse = Traverse[List]
-  val workLoad: List[String]     = List("I quite like CE", "Scala is great", "looking forward to some awesome stuff")
+  val listTraverse           = Traverse[List]
+  val workLoad: List[String] = List("I quite like CE", "Scala is great", "looking forward to some awesome stuff")
 
   def clunkyFutures(): Unit = {
     val futures: List[Future[Int]] = workLoad.map(heavyComputation)
@@ -40,16 +40,15 @@ object IOTraversal extends IOApp.Simple {
     string.split(" ").length
   }.debug
 
-  val ios: List[IO[Int]] = workLoad.map(computeAsIO)
+  val ios: List[IO[Int]]      = workLoad.map(computeAsIO)
   val singleIO: IO[List[Int]] = listTraverse.traverse(workLoad)(computeAsIO)
 
   // parallel traversal
   import cats.syntax.parallel._
   val parallelSingleIO: IO[List[Int]] = workLoad.parTraverse(computeAsIO)
 
-  /**
-   * Exercises
-   */
+  /** Exercises
+    */
   // hint: Use Traverse API
   def sequence[A](listOfIOs: List[IO[A]]): IO[List[A]] =
     listTraverse.traverse(listOfIOs)(identity)
@@ -59,12 +58,11 @@ object IOTraversal extends IOApp.Simple {
     Traverse[F].traverse(listOfIOs)(identity)
 
   // parallel version
-  def parSequence[A](listOfIOs: List[IO[A]]): IO[List[A]] = {
+  def parSequence[A](listOfIOs: List[IO[A]]): IO[List[A]] =
     listOfIOs.parTraverse(identity)
-  }
 
   // hard version
-  def parSequence_v2[F[_] : Traverse, A](wrapperOfIOs: F[IO[A]]): IO[F[A]] =
+  def parSequence_v2[F[_]: Traverse, A](wrapperOfIOs: F[IO[A]]): IO[F[A]] =
     wrapperOfIOs.parTraverse(identity)
 
   // existing sequence API
